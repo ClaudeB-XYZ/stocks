@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             data.forEach(company => {
                 const row = tbody.insertRow();
-                row.insertCell().textContent = company.ticker;
+                row.insertCell().textContent = company.name;
             });
         })
         .catch(error => {
