@@ -1,1 +1,28 @@
+name: Update stock database
 
+on:
+  schedule:
+    - cron: "0 12 * * *" # Runs daily at 12:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run stock data collector
+        run: node fetchStocks.js
+        env:
+          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add stocks.json
+          git commit -m "Update stock database" || exit 0
+          git push
